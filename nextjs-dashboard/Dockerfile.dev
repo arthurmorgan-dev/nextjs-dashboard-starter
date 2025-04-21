@@ -1,0 +1,24 @@
+# Define the current stage as "dev" for future reference
+FROM node:22-alpine AS dev
+
+# Install pnpm as the global package manager, which is recommended by the tutorial
+RUN npm install -g pnpm
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the package.json and pnpm-lock.yaml to the working directory
+# Install pacakages specified by them
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
+
+# Copy the rest of the source code to the working directory
+# The first dot refers to the current folder
+# The second dot refers to the root directory of the working directory inside the container
+COPY . .
+
+# Specify the port number to be used for clarification purposes only
+EXPOSE 3000
+
+# Run the app in development mode
+CMD ["pnpm", "dev"]
